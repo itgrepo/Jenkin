@@ -9,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
 const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || '192.168.0.67',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'test',
@@ -40,4 +40,4 @@ app.get('/attractions', async (req, res) => {
 });
 
 const port = Number(process.env.PORT || 3001);
-app.listen(port, () => console.log(`API listening on http://localhost:${port}`));
+app.listen(port, () => console.log(`API listening on http://192.168.0.67:${port}`));

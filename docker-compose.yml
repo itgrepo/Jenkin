@@ -49,7 +49,7 @@ services:
     build:
       context: ./02_frontend
       args:
-        - API_HOST=${API_HOST:-http://localhost:3001}
+        - API_HOST=${API_HOST:-http://192.168.0.67:3001}
     restart: unless-stopped
     environment:
       - NODE_ENV=production

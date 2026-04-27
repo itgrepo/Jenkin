@@ -117,10 +117,10 @@ API_HOST=${params.API_HOST}
                         docker compose ps
 
                         # Wait for API to be ready (max 60 seconds)
-                        timeout 60 bash -c 'until curl -f http://localhost:3001/health; do sleep 2; done' || exit 1
+                        timeout 60 bash -c 'until curl -f http://192.168.0.67:3001/health; do sleep 2; done' || exit 1
 
                         # Check attractions endpoint
-                        curl -f http://localhost:3001/attractions || exit 1
+                        curl -f http://192.168.0.67:3001/attractions || exit 1
 
                         echo "Health check passed!"
                     """
@@ -143,9 +143,9 @@ API_HOST=${params.API_HOST}
 
                         echo ""
                         echo "=== Deployed Services ==="
-                        echo "Frontend: http://localhost:3000"
-                        echo "API: http://localhost:3001"
-                        echo "phpMyAdmin: http://localhost:8888"
+                        echo "Frontend: http://192.168.0.67:3000"
+                        echo "API: http://192.168.0.67:3001"
+                        echo "phpMyAdmin: http://192.168.0.67:8888"
                     """
                 }
             }
@@ -159,9 +159,9 @@ API_HOST=${params.API_HOST}
             echo "Commit: ${env.GIT_COMMIT_SHORT}"
             echo ""
             echo "Access your application:"
-            echo "  - Frontend: http://localhost:3000"
-            echo "  - API: http://localhost:3001"
-            echo "  - phpMyAdmin: http://localhost:8888"
+            echo "  - Frontend: http://192.168.0.67:3000"
+            echo "  - API: http://192.168.0.67:3001"
+            echo "  - phpMyAdmin: http://192.168.0.67:8888"
         }
         failure {
             echo "❌ Deployment failed!"

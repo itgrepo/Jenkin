@@ -1,6 +1,6 @@
 # ---------- Stage 1: Build the Next.js application ----------
 FROM node:20-alpine AS builder
-ARG API_HOST=192.168.0.67:3001
+ARG API_HOST=http://localhost:3001
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci && npm cache clean --force
