@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-const API_HOST = process.env.API_HOST || 'http://localhost:3001';
+const API_HOST = process.env.API_HOST || 'http://192.168.0.67:3001';
 
 const nextConfig = {
   output: 'standalone',
