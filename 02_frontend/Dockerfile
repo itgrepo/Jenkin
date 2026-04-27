@@ -1,5 +1,5 @@
 # ---------- Stage 1: Build the Next.js application ----------
-FROM node:20-alpine AS builder
+FROM node:20 AS builder
 ARG API_HOST=192.168.0.67:3001
 WORKDIR /app
 COPY package*.json ./
@@ -11,7 +11,7 @@ ENV NEXT_TELEMETRY_DISABLED=1 \
 RUN npm run build
 
 # ---------- Stage 2: Production runtime ----------
-FROM node:20-alpine AS runner
+FROM node:20 AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1
