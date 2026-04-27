@@ -3,7 +3,8 @@ FROM node:20-alpine AS builder
 ARG API_HOST=192.168.0.67:3001
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci && npm cache clean --force
+##RUN npm ci && npm cache clean --force
+RUN npm install
 COPY . .
 ENV NEXT_TELEMETRY_DISABLED=1 \
     API_HOST=${API_HOST}
@@ -14,7 +15,7 @@ FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production \
     NEXT_TELEMETRY_DISABLED=1
-RUN npm install    
+    
 RUN addgroup --system --gid 1001 nodejs && \
     adduser --system --uid 1001 nextjs
 
