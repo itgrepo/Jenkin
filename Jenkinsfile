@@ -21,6 +21,7 @@ pipeline {
                     docker build -t $FRONTEND_IMAGE ./frontend
 
                     echo "=== Build Backend ==="
+                    sed -i 's/{ENV}/prd/g' ./backend/Dockerfile
                     docker build -t $BACKEND_IMAGE ./backend
                 '''
             }
@@ -42,6 +43,7 @@ pipeline {
                     echo "=== Run Frontend ==="
                     docker run -d \
                         --name $FRONTEND_IMAGE \
+                        --link $BACKEND_IMAGE:backend \
                         -p 80:80 \
                         $FRONTEND_IMAGE
                 '''
