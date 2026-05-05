@@ -36,7 +36,7 @@ pipeline {
                     echo "=== Run Backend ==="
                     docker run -d \
                         --name $BACKEND_IMAGE \
-                        -p 8081:8080 \
+                        -p 8081:80 \
                         $BACKEND_IMAGE
 
                     echo "=== Run Frontend ==="

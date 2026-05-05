@@ -35,7 +35,7 @@ func NewRouter() *gin.Engine {
 	r := gin.New()
 
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:5174", "http://203.154.78.224:9000", "https://dev.tisi.go.th:9000", "http://dev.tisi.go.th:9000", "http://dev.tisi.go.th"}, // ระบุ origin React
+		AllowOrigins:     []string{"http://localhost:5173", "http://localhost:5174", "http://203.154.78.224:9000", "https://dev.tisi.go.th:9000", "http://dev.tisi.go.th:9000", "http://dev.tisi.go.th", "http://134.185.172.107"}, // ระบุ origin React
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
