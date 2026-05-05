@@ -42,7 +42,7 @@ pipeline {
                     echo "=== Run Frontend ==="
                     docker run -d \
                         --name $FRONTEND_IMAGE \
-                        -p 3000:80 \
+                        -p 80:80 \
                         $FRONTEND_IMAGE
                 '''
             }
