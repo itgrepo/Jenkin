@@ -1,0 +1,7240 @@
+definitions:
+  models.AddressData:
+    properties:
+      district:
+        type: integer
+      districtName:
+        type: string
+      houseNo:
+        type: string
+      moo:
+        type: string
+      postalCode:
+        type: string
+      province:
+        type: integer
+      provinceName:
+        type: string
+      road:
+        type: string
+      soi:
+        type: string
+      subDistrict:
+        type: integer
+      subDistrictName:
+        type: string
+    type: object
+  models.ApproveBallotRequestRequest:
+    properties:
+      level:
+        description: 1 = manager, 2 = director
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    type: object
+  models.ApproveDisbursementRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    type: object
+  models.ApproveMeetingRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    type: object
+  models.BallotDraft:
+    properties:
+      answerType:
+        type: integer
+      answers:
+        items:
+          $ref: '#/definitions/models.BallotDraftAnswer'
+        type: array
+      attachments:
+        items:
+          $ref: '#/definitions/models.BallotDraftAttachment'
+        type: array
+      createdAt:
+        type: string
+      hasTextInput:
+        type: boolean
+      id:
+        type: integer
+      name:
+        type: string
+      noteText:
+        type: string
+      questionText:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.BallotDraftAnswer:
+    properties:
+      displayOrder:
+        type: integer
+      id:
+        type: integer
+      text:
+        type: string
+    type: object
+  models.BallotDraftAttachment:
+    properties:
+      displayOrder:
+        type: integer
+      fileName:
+        type: string
+      filePath:
+        type: string
+      id:
+        type: integer
+    type: object
+  models.BallotDraftListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.BallotDraft'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.BallotRequest:
+    properties:
+      answerType:
+        type: integer
+      answers:
+        items:
+          $ref: '#/definitions/models.BallotDraftAnswer'
+        type: array
+      attachments:
+        items:
+          $ref: '#/definitions/models.BallotDraftAttachment'
+        type: array
+      committeeIds:
+        items:
+          type: integer
+        type: array
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      createdByName:
+        type: string
+      directorId:
+        type: integer
+      draftId:
+        type: integer
+      endDate:
+        type: string
+      expertRecipients:
+        items:
+          $ref: '#/definitions/models.BallotRequestRecipient'
+        type: array
+      groupType:
+        type: integer
+      groupTypeId:
+        type: integer
+      hasTextInput:
+        type: boolean
+      id:
+        type: integer
+      managerId:
+        type: integer
+      name:
+        type: string
+      numberOfDays:
+        type: integer
+      projectId:
+        type: integer
+      projectName:
+        type: string
+      questionText:
+        type: string
+      staffRecipients:
+        items:
+          $ref: '#/definitions/models.BallotRequestRecipient'
+        type: array
+      startDate:
+        type: string
+      status:
+        $ref: '#/definitions/models.BallotRequestStatus'
+      updatedAt:
+        type: string
+      useDraft:
+        type: boolean
+    type: object
+  models.BallotRequestListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.BallotRequest'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.BallotRequestRecipient:
+    properties:
+      committeeId:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      type:
+        description: '"committee" | "staff" | "expert" | "public"'
+        type: string
+      userId:
+        type: integer
+    type: object
+  models.BallotRequestStatus:
+    enum:
+    - pending_approval
+    - waiting_manager_review
+    - waiting_director_review
+    - manager_approved
+    - manager_disapproved
+    - director_approved
+    - director_disapproved
+    - pending_review
+    type: string
+    x-enum-varnames:
+    - BallotRequestStatusPendingApproval
+    - BallotRequestStatusWaitingManagerReview
+    - BallotRequestStatusWaitingDirectorReview
+    - BallotRequestStatusManagerApproved
+    - BallotRequestStatusManagerDisapproved
+    - BallotRequestStatusDirectorApproved
+    - BallotRequestStatusDirectorDisapproved
+    - BallotRequestStatusPendingReview
+  models.BallotResponse:
+    properties:
+      answers:
+        description: รายการคำตอบ
+        items:
+          $ref: '#/definitions/models.BallotResponseAnswer'
+        type: array
+      ballotRequestId:
+        description: FK to i_ballot_request
+        type: integer
+      createdAt:
+        type: string
+      id:
+        type: integer
+      submittedAt:
+        description: วันที่ตอบ
+        type: string
+      updatedAt:
+        type: string
+      userEmail:
+        description: อีเมลผู้ตอบ
+        type: string
+      userId:
+        description: FK to user (ผู้ตอบ)
+        type: integer
+      userName:
+        description: ชื่อผู้ตอบ
+        type: string
+    type: object
+  models.BallotResponseAnswer:
+    properties:
+      answerText:
+        description: ข้อความคำตอบ (สำหรับ choice answer)
+        type: string
+      ballotDraftAnswerId:
+        description: FK to i_ballot_draft_answer (ถ้าเป็น choice answer)
+        type: integer
+      displayOrder:
+        type: integer
+      id:
+        type: integer
+      textInput:
+        description: ข้อความที่ผู้ตอบพิมพ์เพิ่มเติม
+        type: string
+    type: object
+  models.BallotResponseListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.BallotResponse'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.BankAccountData:
+    properties:
+      accountPhotoFile:
+        type: string
+      accountType:
+        type: integer
+      bank:
+        type: integer
+      bankAccountNumber:
+        type: string
+      bankBranch:
+        type: string
+      createdAt:
+        type: string
+      expertId:
+        type: integer
+      id:
+        type: integer
+      ktbFile:
+        type: string
+      status:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.BatchUpsertData:
+    properties:
+      created:
+        type: integer
+      topics:
+        items:
+          $ref: '#/definitions/models.MeetingTopic'
+        type: array
+      updated:
+        type: integer
+    type: object
+  models.BatchUpsertMeetingTopicsRequest:
+    properties:
+      topics:
+        items:
+          $ref: '#/definitions/models.MeetingTopic'
+        type: array
+    required:
+    - topics
+    type: object
+  models.BatchUpsertMeetingTopicsResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.BatchUpsertData'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.CloseMeetingRequest:
+    properties:
+      remarks:
+        type: string
+    type: object
+  models.CloseMeetingResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.Meeting'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.Committee:
+    properties:
+      committeeNameEn:
+        type: string
+      committeeNameTh:
+        type: string
+      committeeNumber:
+        type: string
+      committeeType:
+        type: integer
+      committeeTypeName:
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      id:
+        type: integer
+      iec:
+        type: string
+      iso:
+        type: string
+      productGroup:
+        type: string
+      productGroupId:
+        type: integer
+      responsibleGroup:
+        type: string
+      responsibleGroupId:
+        type: string
+      scopeOfWork:
+        type: string
+      status:
+        description: active, suspended, inactive
+        type: string
+      subCommitteeNumber:
+        type: string
+      subCommitteeOf:
+        type: string
+      subCommitteeOfName:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: integer
+    type: object
+  models.CommitteeListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Committee'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.CommitteeMember:
+    properties:
+      assignmentFile:
+        type: string
+      committeeId:
+        type: integer
+      createdAt:
+        type: string
+      directiveId:
+        type: integer
+      directiveNumber:
+        type: string
+      expertId:
+        type: integer
+      expertName:
+        type: string
+      id:
+        type: integer
+      idCard:
+        type: string
+      isAssistantSecretary:
+        type: boolean
+      isSecretary:
+        type: boolean
+      memberTypeId:
+        type: integer
+      memberTypeName:
+        type: string
+      organizationId:
+        type: integer
+      organizationName:
+        type: string
+      positionId:
+        type: integer
+      positionName:
+        type: string
+      remarks:
+        type: string
+      representativeOrder:
+        description: 1-5 (เฉพาะผู้แทน)
+        type: integer
+      status:
+        description: active, inactive
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.CommitteeMemberListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.CommitteeMember'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.ContactAddressData:
+    properties:
+      district:
+        type: integer
+      districtName:
+        type: string
+      houseNo:
+        type: string
+      moo:
+        type: string
+      postalCode:
+        type: string
+      province:
+        type: integer
+      provinceName:
+        type: string
+      road:
+        type: string
+      soi:
+        type: string
+      subDistrict:
+        type: integer
+      subDistrictName:
+        type: string
+      useIdCardAddress:
+        type: boolean
+    type: object
+  models.DeleteFileRequest:
+    properties:
+      objectName:
+        type: string
+    required:
+    - objectName
+    type: object
+  models.Directive:
+    properties:
+      amd:
+        description: 'Default: "0"'
+        type: string
+      committeeId:
+        type: integer
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      directiveTypeId:
+        type: integer
+      directiveTypeName:
+        type: string
+      edition:
+        description: 'Default: "0"'
+        type: string
+      endDate:
+        description: 'Date format: YYYY-MM-DD'
+        type: string
+      filePath:
+        type: string
+      id:
+        type: integer
+      meetingDate:
+        description: 'Date format: YYYY-MM-DD'
+        type: string
+      meetingRef:
+        type: string
+      meetingRound:
+        type: string
+      meetingSource:
+        description: 'enum: ''emeeting'', ''manual'''
+        type: string
+      orderNumber:
+        type: string
+      signingDate:
+        description: 'Date format: YYYY-MM-DD'
+        type: string
+      subCommitteeOf:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: integer
+    type: object
+  models.DirectiveListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Directive'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.DisapproveBallotRequestRequest:
+    properties:
+      level:
+        description: 1 = manager, 2 = director
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.DisapproveDisbursementRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.DisapproveMeetingRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.DisbursementExpense:
+    properties:
+      actualExpense:
+        type: number
+      budgetAmount:
+        type: number
+      expenseTypeId:
+        type: integer
+      expenseTypeName:
+        type: string
+      id:
+        type: integer
+    type: object
+  models.DisbursementStatus:
+    enum:
+    - pending_approval
+    - pending_approval_level_1
+    - pending_approval_level_2
+    - disbursement_approved
+    - disbursement_disapproved
+    - disbursement_review
+    type: string
+    x-enum-varnames:
+    - DisbursementStatusPendingApproval
+    - DisbursementStatusPendingApprovalLevel1
+    - DisbursementStatusPendingApprovalLevel2
+    - DisbursementStatusApproved
+    - DisbursementStatusDisapproved
+    - DisbursementStatusReview
+  models.DisbursementSummary:
+    properties:
+      createdAt:
+        type: string
+      expenseFileNames:
+        items:
+          type: string
+        type: array
+      expenseFilePaths:
+        items:
+          type: string
+        type: array
+      expenses:
+        items:
+          $ref: '#/definitions/models.DisbursementExpense'
+        type: array
+      id:
+        type: integer
+      meetingId:
+        type: integer
+      status:
+        $ref: '#/definitions/models.DisbursementStatus'
+      updatedAt:
+        type: string
+    type: object
+  models.DisbursementSummaryListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.DisbursementSummaryWithMeeting'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.DisbursementSummaryWithMeeting:
+    properties:
+      createdAt:
+        type: string
+      expenseFileNames:
+        items:
+          type: string
+        type: array
+      expenseFilePaths:
+        items:
+          type: string
+        type: array
+      expenses:
+        items:
+          $ref: '#/definitions/models.DisbursementExpense'
+        type: array
+      id:
+        type: integer
+      meeting:
+        $ref: '#/definitions/models.Meeting'
+      meetingId:
+        type: integer
+      status:
+        $ref: '#/definitions/models.DisbursementStatus'
+      updatedAt:
+        type: string
+    type: object
+  models.District:
+    properties:
+      code:
+        type: string
+      geoId:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      postCode:
+        type: string
+      provinceId:
+        type: string
+    type: object
+  models.DocumentItem:
+    properties:
+      ballotId:
+        type: integer
+      ballotName:
+        type: string
+      committeeId:
+        type: integer
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      createdByName:
+        type: string
+      description:
+        type: string
+      expectedAction:
+        type: string
+      expectedDate:
+        description: keep as string if frontend sends YYYY-MM-DD
+        type: string
+      filePath:
+        type: string
+      id:
+        type: integer
+      meetingId:
+        type: integer
+      meetingName:
+        type: string
+      mimeType:
+        type: string
+      modifiedAt:
+        type: string
+      nNumber:
+        description: N Number index
+        type: integer
+      projectId:
+        type: integer
+      projectName:
+        type: string
+      replaces:
+        type: string
+      status:
+        description: To be notified / Notified / Draft / Deleted
+        type: string
+      subTypeCode:
+        type: string
+      subTypeName:
+        type: string
+      title:
+        type: string
+      typeCode:
+        description: GENERAL / MEETING / PROJECT / BALLOT / RESOLUTION / FILE / FOLDER
+        type: string
+      typeName:
+        type: string
+      updatedByName:
+        type: string
+      version:
+        type: number
+    type: object
+  models.DocumentListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.DocumentItem'
+        type: array
+    type: object
+  models.DocumentLog:
+    properties:
+      action:
+        type: string
+      actionAt:
+        type: string
+      actionBy:
+        type: integer
+      actionByName:
+        type: string
+      actionByRoleID:
+        type: integer
+      actionByRoleName:
+        type: string
+      actionDetail:
+        type: string
+      documentId:
+        type: integer
+      id:
+        type: integer
+    type: object
+  models.DocumentLogListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.DocumentLog'
+        type: array
+    type: object
+  models.DocumentPathGroupsResponse:
+    properties:
+      data:
+        items:
+          type: string
+        type: array
+    type: object
+  models.EducationData:
+    properties:
+      createdAt:
+        type: string
+      educationLevel:
+        type: integer
+      expertId:
+        type: integer
+      graduationYear:
+        type: string
+      id:
+        type: integer
+      institution:
+        type: integer
+      qualification:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.EmailSentStatus:
+    enum:
+    - not_sent
+    - sent
+    - failed
+    type: string
+    x-enum-varnames:
+    - EmailSentStatusNotSent
+    - EmailSentStatusSent
+    - EmailSentStatusFailed
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.Expert:
+    properties:
+      bankAccount:
+        items:
+          $ref: '#/definitions/models.BankAccountData'
+        type: array
+      contactAddress:
+        $ref: '#/definitions/models.ContactAddressData'
+      createdAt:
+        type: string
+      cvFile:
+        type: string
+      educations:
+        items:
+          $ref: '#/definitions/models.EducationData'
+        type: array
+      email:
+        type: string
+      firstName:
+        type: string
+      id:
+        type: integer
+      idCard:
+        type: string
+      idCardAddress:
+        $ref: '#/definitions/models.AddressData'
+      lastName:
+        type: string
+      mobile:
+        type: string
+      phone:
+        type: string
+      prefix:
+        type: integer
+      trainings:
+        items:
+          $ref: '#/definitions/models.TrainingData'
+        type: array
+      updateBy:
+        type: integer
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+      workExperiences:
+        items:
+          $ref: '#/definitions/models.WorkExperienceData'
+        type: array
+    type: object
+  models.ExpertListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Expert'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.GenerateExpenseDocumentResponse:
+    properties:
+      fileName:
+        type: string
+      filePath:
+        type: string
+    type: object
+  models.GenerateInvitationLetterResponse:
+    properties:
+      fileName:
+        type: string
+      filePath:
+        type: string
+    type: object
+  models.LoginRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  models.MasterData:
+    properties:
+      code:
+        type: string
+      icon:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      nameEn:
+        type: string
+      nameTh:
+        type: string
+      subName:
+        type: string
+    type: object
+  models.MaxNNumberResponse:
+    properties:
+      maxNNumber:
+        type: integer
+    type: object
+  models.Meeting:
+    properties:
+      approverLevel1Id:
+        type: integer
+      approverLevel1Name:
+        type: string
+      approverLevel2Id:
+        type: integer
+      approverLevel2Name:
+        type: string
+      committeeId:
+        type: integer
+      committeeName:
+        type: string
+      committeeNumber:
+        type: string
+      createdAt:
+        type: string
+      disbursementStatus:
+        $ref: '#/definitions/models.DisbursementStatus'
+      endDate:
+        type: string
+      endTime:
+        type: string
+      hasExpense:
+        type: boolean
+      hasParticipants:
+        type: boolean
+      hostOrganization:
+        type: string
+      id:
+        type: integer
+      instanceNumber:
+        type: string
+      meetingSubject:
+        type: string
+      remarks:
+        type: string
+      responsiblePerson:
+        type: string
+      responsiblePersonId:
+        type: integer
+      startDate:
+        type: string
+      startTime:
+        type: string
+      status:
+        $ref: '#/definitions/models.MeetingStatus'
+      subCommitteeOf:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.MeetingBudget:
+    properties:
+      amount:
+        type: number
+      createdAt:
+        type: string
+      departmentId:
+        type: integer
+      departmentName:
+        type: string
+      fiscalYear:
+        type: string
+      id:
+        type: integer
+      subDepartmentId:
+        type: integer
+      subDepartmentName:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.MeetingBudgetListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.MeetingBudget'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.MeetingExpense:
+    properties:
+      committeeName:
+        type: string
+      committeeNumber:
+        type: string
+      createdAt:
+        type: string
+      expenses:
+        items:
+          $ref: '#/definitions/models.MeetingExpenseItem'
+        type: array
+      id:
+        type: integer
+      instanceNumber:
+        type: string
+      meetingId:
+        type: integer
+      totalBudget:
+        type: number
+      updatedAt:
+        type: string
+    type: object
+  models.MeetingExpenseBudgetInfo:
+    properties:
+      annualBudget:
+        type: number
+      expensesAdvancePayment:
+        type: number
+      expensesDisbursed:
+        type: number
+      remainingBudget:
+        type: number
+    type: object
+  models.MeetingExpenseItem:
+    properties:
+      expenseTypeId:
+        type: integer
+      expenseTypeName:
+        type: string
+      expenseTypeOther:
+        type: string
+      id:
+        type: integer
+      quantity:
+        type: number
+      remarks:
+        type: string
+      totalPrice:
+        type: number
+      unitPrice:
+        type: number
+    type: object
+  models.MeetingFormat:
+    enum:
+    - onsite
+    - online
+    - hybrid
+    type: string
+    x-enum-varnames:
+    - MeetingFormatOnsite
+    - MeetingFormatOnline
+    - MeetingFormatHybrid
+  models.MeetingInvitation:
+    properties:
+      agendaFileName:
+        type: string
+      agendaFilePath:
+        type: string
+      createdAt:
+        type: string
+      emailSentStatus:
+        $ref: '#/definitions/models.EmailSentStatus'
+      id:
+        type: integer
+      invitationLetterFileName:
+        type: string
+      invitationLetterFilePath:
+        type: string
+      meetingFormat:
+        $ref: '#/definitions/models.MeetingFormat'
+      meetingId:
+        type: integer
+      meetingIdOnline:
+        type: string
+      meetingLink:
+        type: string
+      meetingLocation:
+        type: string
+      meetingRoom:
+        type: string
+      passcode:
+        type: string
+      supportingDocumentNames:
+        items:
+          type: string
+        type: array
+      supportingDocumentPaths:
+        items:
+          type: string
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  models.MeetingListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Meeting'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.MeetingParticipant:
+    properties:
+      attended:
+        type: boolean
+      createdAt:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      meetingAllowance:
+        type: string
+      meetingId:
+        type: integer
+      name:
+        type: string
+      sentRepresentative:
+        type: boolean
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  models.MeetingParticipantListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.MeetingParticipant'
+        type: array
+      total:
+        type: integer
+    type: object
+  models.MeetingRegisterRequest:
+    properties:
+      followerNames:
+        description: ชื่อผู้ติดตาม (optional)
+        items:
+          type: string
+        type: array
+    type: object
+  models.MeetingStatus:
+    enum:
+    - draft
+    - sent_for_approval_level_1
+    - sent_for_approval_level_2
+    - approved
+    - disapproved
+    - pending_review
+    - meeting_invited
+    - meeting_closed
+    type: string
+    x-enum-varnames:
+    - MeetingStatusDraft
+    - MeetingStatusSentForApprovalLevel1
+    - MeetingStatusSentForApprovalLevel2
+    - MeetingStatusApproved
+    - MeetingStatusDisapproved
+    - MeetingStatusPendingReview
+    - MeetingStatusMeetingInvited
+    - MeetingStatusMeetingClosed
+  models.MeetingTopic:
+    properties:
+      createdAt:
+        type: string
+      displayOrder:
+        type: integer
+      id:
+        type: integer
+      meetingId:
+        type: integer
+      projectId:
+        type: integer
+      projectName:
+        type: string
+      projectOwner:
+        type: string
+      projectStageCode:
+        type: string
+      projectStartYear:
+        type: string
+      topicText:
+        type: string
+      topicType:
+        $ref: '#/definitions/models.TopicType'
+      updatedAt:
+        type: string
+    type: object
+  models.MeetingTopicListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.MeetingTopic'
+        type: array
+      total:
+        type: integer
+    type: object
+  models.MeetingWithRegistration:
+    properties:
+      approverLevel1Id:
+        type: integer
+      approverLevel1Name:
+        type: string
+      approverLevel2Id:
+        type: integer
+      approverLevel2Name:
+        type: string
+      committeeId:
+        type: integer
+      committeeName:
+        type: string
+      committeeNumber:
+        type: string
+      createdAt:
+        type: string
+      disbursementStatus:
+        $ref: '#/definitions/models.DisbursementStatus'
+      endDate:
+        type: string
+      endTime:
+        type: string
+      hasExpense:
+        type: boolean
+      hasParticipants:
+        type: boolean
+      hostOrganization:
+        type: string
+      id:
+        type: integer
+      instanceNumber:
+        type: string
+      meetingSubject:
+        type: string
+      registeredCount:
+        description: จำนวนผู้ลงทะเบียนแล้ว
+        type: integer
+      registrationId:
+        description: ID ของ registration
+        type: integer
+      registrationStatus:
+        description: '"registered" | "not_registered"'
+        type: string
+      remarks:
+        type: string
+      responsiblePerson:
+        type: string
+      responsiblePersonId:
+        type: integer
+      startDate:
+        type: string
+      startTime:
+        type: string
+      status:
+        $ref: '#/definitions/models.MeetingStatus'
+      subCommitteeOf:
+        type: string
+      totalMeetingAttendees:
+        description: จำนวนผู้เข้าร่วมประชุม
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  models.MessageResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  models.NotifyDocumentRequest:
+    properties:
+      body:
+        description: 'Optional: if provided, send email'
+        type: string
+      subject:
+        description: 'Optional: if provided, send email'
+        type: string
+    type: object
+  models.NotifyDocumentResponse:
+    properties:
+      message:
+        type: string
+      sentTo:
+        description: Number of email recipients (if email was sent)
+        type: integer
+      success:
+        type: boolean
+    type: object
+  models.Project:
+    properties:
+      bcgReason:
+        type: string
+      committeeId:
+        type: integer
+      committeeName:
+        type: string
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      deletedAt:
+        type: string
+      enforcementStatusId:
+        type: integer
+      enforcementStatusName:
+        type: string
+      expectedCompletionMonth:
+        type: string
+      expectedCompletionYear:
+        type: string
+      id:
+        type: integer
+      isoDeliverableId:
+        type: integer
+      isoDeliverableName:
+        type: string
+      isoDeliverableOther:
+        type: string
+      isoIcsIds:
+        items:
+          type: string
+        type: array
+      isoIcsNames:
+        items:
+          type: string
+        type: array
+      methodTypeId:
+        type: integer
+      methodTypeName:
+        type: string
+      nameEnglish:
+        type: string
+      nameThai:
+        type: string
+      nssSectorId:
+        type: integer
+      nssSectorName:
+        type: string
+      nssSubjectId:
+        type: integer
+      nssSubjectName:
+        type: string
+      ownerGroupId:
+        type: integer
+      ownerGroupName:
+        type: string
+      ownerId:
+        type: integer
+      ownerName:
+        type: string
+      productBCGIds:
+        items:
+          type: integer
+        type: array
+      productBCGNames:
+        items:
+          type: string
+        type: array
+      productGroupId:
+        type: integer
+      productGroupName:
+        type: string
+      productPolicyGroupIds:
+        items:
+          type: integer
+        type: array
+      productPolicyGroupNames:
+        items:
+          type: string
+        type: array
+      proposalTypeId:
+        type: integer
+      proposalTypeName:
+        type: string
+      remarks:
+        type: string
+      sdosId:
+        type: integer
+      sdosName:
+        type: string
+      stageCode:
+        type: string
+      stageUiMsg:
+        type: string
+      startYear:
+        type: string
+      stdTypeId:
+        type: integer
+      stdTypeName:
+        type: string
+      subCommitteeId:
+        type: integer
+      subCommitteeName:
+        type: string
+      tisReprintNo:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: integer
+      writerTypeId:
+        type: integer
+      writerTypeName:
+        type: string
+    required:
+    - nameThai
+    - startYear
+    type: object
+  models.ProjectListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.Project'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.ProjectLog:
+    properties:
+      action:
+        type: string
+      changedAt:
+        type: string
+      changedBy:
+        type: integer
+      fieldName:
+        type: string
+      id:
+        type: integer
+      newValue:
+        type: string
+      oldValue:
+        type: string
+      projectId:
+        type: integer
+      remarks:
+        type: string
+      stageCode:
+        type: string
+      stageDate:
+        type: string
+      stageDescription:
+        type: string
+      stageStatus:
+        type: string
+    type: object
+  models.ProjectReview:
+    properties:
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      effectiveDate:
+        type: string
+      enforcementStatusId:
+        type: integer
+      enforcementStatusName:
+        type: string
+      id:
+        type: integer
+      nameEnglish:
+        type: string
+      nameThai:
+        type: string
+      ownerGroupId:
+        type: integer
+      ownerGroupName:
+        type: string
+      remarks:
+        type: string
+      review_cancel_summary_remark:
+        description: วันที่ยกเลิกสรุปผลการเวียน
+        type: string
+      review_circulation_summary_remark:
+        description: วันที่สรุปผลการเวียน
+        type: string
+      reviewEndDate:
+        type: string
+      reviewStartDate:
+        type: string
+      stageCode:
+        type: string
+      stageUiMsg:
+        type: string
+      tisNumber:
+        type: string
+      updatedAt:
+        type: string
+      updatedBy:
+        type: integer
+    type: object
+  models.ProjectReviewListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.ProjectReview'
+        type: array
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+  models.ProjectReviewLog:
+    properties:
+      createdAt:
+        type: string
+      createdBy:
+        type: integer
+      id:
+        type: integer
+      projectReviewId:
+        type: integer
+      remarks:
+        type: string
+      stageCode:
+        type: string
+      stageDate:
+        type: string
+      stageDescription:
+        type: string
+      stageStatus:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Province:
+    properties:
+      code:
+        type: string
+      geoId:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.RegisterResponse:
+    properties:
+      createdAt:
+        type: string
+      followers:
+        items:
+          $ref: '#/definitions/models.RegistrationFollower'
+        type: array
+      id:
+        type: integer
+      meetingId:
+        type: integer
+      registeredAt:
+        type: string
+      status:
+        type: string
+      updatedAt:
+        type: string
+      userId:
+        type: integer
+    type: object
+  models.RegistrationFollower:
+    properties:
+      displayOrder:
+        type: integer
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.ReviewBallotRequestRequest:
+    properties:
+      level:
+        description: 1 = manager, 2 = director
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.ReviewDisbursementRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.ReviewMeetingRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+      remarks:
+        type: string
+    required:
+    - level
+    - remarks
+    type: object
+  models.Role:
+    properties:
+      group:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+  models.SSOAuthResponse:
+    properties:
+      token:
+        type: string
+      user:
+        allOf:
+        - $ref: '#/definitions/models.UserInfo'
+        description: Full UserInfo with all SSO fields except password
+    type: object
+  models.SaveStandardAnnouncementRequest:
+    properties:
+      effectiveDate:
+        type: string
+      nameEnglish:
+        type: string
+      nameThai:
+        type: string
+      projectId:
+        type: integer
+      remarks:
+        type: string
+      royalGazettePublishDate:
+        type: string
+      rwosignedDate:
+        type: string
+      sendToRoyalGazetteDate:
+        type: string
+      sendToTISDate:
+        type: string
+      systemBy:
+        type: string
+      tissignedDate:
+        type: string
+    required:
+    - nameEnglish
+    - nameThai
+    - projectId
+    type: object
+  models.SendApprovalRequest:
+    properties:
+      level:
+        description: 1 or 2
+        type: integer
+    required:
+    - level
+    type: object
+  models.SendBallotRequestForApprovalRequest:
+    properties:
+      status:
+        $ref: '#/definitions/models.BallotRequestStatus'
+    required:
+    - status
+    type: object
+  models.SendInvitationEmailResponse:
+    properties:
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.SubDistrict:
+    properties:
+      code:
+        type: string
+      districtId:
+        type: string
+      geoId:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      provinceId:
+        type: string
+    type: object
+  models.SubmitDisbursementResponse:
+    properties:
+      data:
+        $ref: '#/definitions/models.DisbursementSummary'
+      message:
+        type: string
+      success:
+        type: boolean
+    type: object
+  models.TISStandardForReview:
+    properties:
+      effectiveDate:
+        type: string
+      id:
+        type: integer
+      nameEnglish:
+        type: string
+      nameThai:
+        type: string
+      tisNumber:
+        type: string
+    type: object
+  models.TISStandardForReviewListResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/models.TISStandardForReview'
+        type: array
+      total:
+        type: integer
+    type: object
+  models.TopicType:
+    enum:
+    - project
+    - other
+    type: string
+    x-enum-varnames:
+    - TopicTypeProject
+    - TopicTypeOther
+  models.TrainingData:
+    properties:
+      createdAt:
+        type: string
+      details:
+        type: string
+      expertId:
+        type: integer
+      id:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  models.UpdateProjectStageRequest:
+    properties:
+      approve_initial_draft_action:
+        type: string
+      approve_initial_draft_by:
+        type: integer
+      approve_initial_draft_remarks:
+        type: string
+      approve_project_lv1_action:
+        type: string
+      approve_project_lv1_by:
+        type: integer
+      approve_project_lv1_remarks:
+        type: string
+      approve_project_lv2_action:
+        type: string
+      approve_project_lv2_by:
+        type: integer
+      approve_project_lv2_remarks:
+        type: string
+      committee_summary:
+        type: string
+      committee_summary_file_path_pdf:
+        type: string
+      committee_summary_file_path_word:
+        type: string
+      committee_summary_remarks:
+        type: string
+      draft_circulation_summary_committee_remarks:
+        type: string
+      draft_circulation_summary_remarks:
+        type: string
+      draft_circulation_summary_subcommittee_remarks:
+        type: string
+      final_draft_summary_remarks:
+        type: string
+      gmmo_summary_remarks:
+        type: string
+      id:
+        type: integer
+      initial_draft_date:
+        type: string
+      initial_draft_document_file_path:
+        type: string
+      initial_draft_file_path:
+        type: string
+      initial_draft_meeting_report_file_path:
+        type: string
+      initial_draft_powerpoint_file_path:
+        type: string
+      initial_draft_questionnaire_summary_file_path:
+        type: string
+      initial_draft_remarks:
+        type: string
+      save_draft_file_path:
+        type: string
+      save_draft_remarks:
+        type: string
+      stageCode:
+        type: string
+      stageUiMsg:
+        type: string
+      standard_announcement_effective_date:
+        description: วันที่มีผลบังคับใช้
+        type: string
+      standard_announcement_final_draft_file_path:
+        description: ไฟล์เอกสารร่าง Final
+        type: string
+      standard_announcement_remarks:
+        description: หมายเหตุ
+        type: string
+      standard_announcement_royal_gazette_publish_date:
+        description: วันที่ลงราชกิจจา
+        type: string
+      standard_announcement_rwo_signed_date:
+        description: วันที่ รวอ. ลงนาม
+        type: string
+      standard_announcement_send_to_royal_gazette_date:
+        description: วันที่ส่งไปราชกิจจา
+        type: string
+      standard_announcement_send_to_tis_date:
+        description: วันที่ส่งเอกสารไป ลมอ.
+        type: string
+      standard_announcement_tis_signed_date:
+        description: วันที่ ลมอ. ลงนาม
+        type: string
+      sub_committee_summary:
+        type: string
+      sub_committee_summary_file_path_pdf:
+        type: string
+      sub_committee_summary_file_path_word:
+        type: string
+      sub_committee_summary_remarks:
+        type: string
+      tis_number:
+        type: string
+      tis_number_issue_date:
+        type: string
+    required:
+    - id
+    - stageCode
+    type: object
+  models.UploadResponse:
+    properties:
+      filename:
+        type: string
+      message:
+        type: string
+      url:
+        type: string
+    type: object
+  models.UserInfo:
+    properties:
+      address_en:
+        description: En เลขที่ อาคาร ชั้น ห้อง ชื่อหมู่บ้าน
+        type: string
+      address_no:
+        description: เลขที่ อาคาร ชั้น ห้อง ชื่อหมู่บ้าน
+        type: string
+      applicanttype_id:
+        description: ประเภทผู้สมัคร
+        type: string
+      block:
+        description: 0=ไม่ถูกบล็อก, 1=ถูกบล็อก
+        type: integer
+      branch_code:
+        description: รหัสสาขา
+        type: string
+      branch_type:
+        description: ประเภทสาขา 1.สำนักงานใหญ่, 2.สาขา
+        type: string
+      building:
+        description: อาคาร
+        type: string
+      check_api:
+        description: เช็คสถานะ API 1.API
+        type: integer
+      contact_address_en:
+        description: En เลขที่ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_address_no:
+        description: เลขที่ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_building:
+        description: อาคาร (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_district:
+        description: เขต/อำเภอ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_district_en:
+        description: En เขต/อำเภอ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_fax:
+        description: แฟกซ์ (ผู้ติดต่อ)
+        type: string
+      contact_first_name:
+        description: ชื่อ (ผู้ติดต่อ)
+        type: string
+      contact_last_name:
+        description: นามสกุล (ผู้ติดต่อ)
+        type: string
+      contact_moo:
+        description: หมู่ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_moo_en:
+        description: En หมู่ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_name:
+        description: ชื่อผู้ติดต่อเจ้าของ E-mail
+        type: string
+      contact_phone_number:
+        description: เบอร์โทรศัพท์ (ผู้ติดต่อ)
+        type: string
+      contact_position:
+        description: ตำแหน่ง (ผู้ติดต่อ)
+        type: string
+      contact_prefix_name:
+        description: คำนำหน้าชื่อ (ผู้ติดต่อ)
+        type: string
+      contact_prefix_text:
+        description: คำนำหน้าชื่อ (ผู้ติดต่อ) text
+        type: string
+      contact_province:
+        description: จังหวัด (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_province_en:
+        description: En จังหวัด (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_soi:
+        description: ตรอก/ซอย (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_soi_en:
+        description: En ตรอก/ซอย (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_street:
+        description: ถนน (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_street_en:
+        description: En ถนน (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_subdistrict:
+        description: แขวง/ตำบล (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_subdistrict_en:
+        description: En แขวง/ตำบล (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_tax_id:
+        description: เลขประจำตัวผู้เสียภาษี (ผู้ติดต่อ)
+        type: string
+      contact_tel:
+        description: โทรศัพท์ (ผู้ติดต่อ)
+        type: string
+      contact_zipcode:
+        description: รหัสไปรษณีย์ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      contact_zipcode_en:
+        description: En รหัสไปรษณีย์ (ที่อยู่ที่ติดต่อได้)
+        type: string
+      corporatefile:
+        description: หนังสือรับรองหรือสำเนาใบสำคัญ
+        type: string
+      date_niti:
+        description: วันที่นิติบุคคล
+        type: string
+      date_of_birth:
+        description: วันเกิด
+        type: string
+      district:
+        description: เขต/อำเภอ
+        type: string
+      district_en:
+        description: En เขต/อำเภอ
+        type: string
+      email:
+        type: string
+      fax:
+        description: แฟกซ์
+        type: string
+      google2fa_secret:
+        description: Login 2 ขั้นตอน Google Authenticator รหัสลับ
+        type: string
+      google2fa_status:
+        description: Login 2 ขั้นตอน Google Authenticator 0=ปิดใช้, 1=เปิดใช้
+        type: integer
+      id:
+        description: SSO Users fields (sso_users table) - All fields except password
+        type: integer
+      juristic_cause_quit:
+        description: สาเหตุที่เลิกกิจการ กรณี juristic_status=4
+        type: string
+      juristic_status:
+        description: สถานะนิติบุคคล 1.ยังดำเนินกิจการอยู่, 2.ฟื้นฟู, 3.คืนสู่ทะเบียน,
+          4.เลิกกิจการ
+        type: integer
+      lastResetTime:
+        description: Date of last password reset
+        type: string
+      lastvisitDate:
+        description: วันที่เข้าใช้งานล่าสุด
+        type: string
+      latitude:
+        description: พิกัดที่ตั้ง (ลองจิจูด)
+        type: string
+      longitude:
+        description: พิกัดที่ตั้ง (ละติจูด)
+        type: string
+      moo:
+        description: หมู่
+        type: string
+      moo_en:
+        description: En หมู่
+        type: string
+      name:
+        description: ชื่อ/บริษัท
+        type: string
+      name_en:
+        description: En ชื่อ/บริษัท
+        type: string
+      nationality:
+        description: สัญชาติ
+        type: string
+      params:
+        description: Parameters
+        type: string
+      password:
+        type: string
+      passwordHash:
+        type: string
+      person_first_name:
+        description: ชื่อ (บุคคล)
+        type: string
+      person_last_name:
+        description: นามสกุล (บุคคล)
+        type: string
+      person_type:
+        description: ประเภทบุคคล
+        type: string
+      personfile:
+        description: สำเนาบัตรประจำตัวประชาชน
+        type: string
+      picture:
+        description: ชื่อไฟล์ภาพประจำตัว
+        type: string
+      prefix_name:
+        description: คำนำหน้าชื่อ
+        type: string
+      prefix_text:
+        description: คำนำหน้าชื่อ text
+        type: string
+      province:
+        description: จังหวัด
+        type: string
+      province_en:
+        description: En จังหวัด
+        type: string
+      reg_subdepart:
+        type: string
+      registerDate:
+        description: วันที่สมัคร
+        type: string
+      remember_token:
+        description: Remember token
+        type: string
+      resetCount:
+        description: Count of password resets since lastResetTime
+        type: integer
+      role:
+        $ref: '#/definitions/models.Role'
+      sendEmail:
+        description: ส่งอีเมล
+        type: integer
+      soi:
+        description: ตรอก/ซอย
+        type: string
+      soi_en:
+        description: En ตรอก/ซอย
+        type: string
+      state:
+        description: 1=รอยืนยัน, 2=ยืนยันแล้ว, 3=รอเจ้าหน้าที่เปิดใช้งาน
+        type: integer
+      street:
+        description: ถนน
+        type: string
+      street_en:
+        description: En ถนน
+        type: string
+      subdistrict:
+        description: แขวง/ตำบล
+        type: string
+      subdistrict_en:
+        description: En แขวง/ตำบล
+        type: string
+      tax_number:
+        description: เลขประจำตัวผู้เสียภาษี
+        type: string
+      tel:
+        description: โทรศัพท์
+        type: string
+      username:
+        type: string
+      zipcode:
+        description: รหัสไปรษณีย์
+        type: string
+      zipcode_en:
+        description: En รหัสไปรษณีย์
+        type: string
+    type: object
+  models.WorkExperienceData:
+    properties:
+      createdAt:
+        type: string
+      details:
+        type: string
+      endYear:
+        type: string
+      expertId:
+        type: integer
+      id:
+        type: integer
+      responsibility:
+        type: string
+      startYear:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /api/v1/estandard/academy:
+    get:
+      description: Get list of all academy from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all academy
+      tags:
+      - address
+  /api/v1/estandard/accountTypes:
+    get:
+      description: Get list of all account types from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all account types
+      tags:
+      - address
+  /api/v1/estandard/auth/logout:
+    post:
+      consumes:
+      - application/json
+      description: Logout current user by removing token cookie
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Logout
+      tags:
+      - Auth
+  /api/v1/estandard/ballot-answer-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot answer types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Answer Types
+      tags:
+      - Global
+  /api/v1/estandard/ballot-draft:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot drafts with filtering and pagination
+      parameters:
+      - description: Search in name or question text
+        in: query
+        name: search
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotDraftListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Drafts List
+      tags:
+      - Ballot Draft
+    post:
+      consumes:
+      - application/json
+      description: Create a new ballot draft or update existing one with nested relationships
+      parameters:
+      - description: Ballot Draft data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BallotDraft'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotDraft'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Ballot Draft (Create or Update)
+      tags:
+      - Ballot Draft
+  /api/v1/estandard/ballot-draft/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a ballot draft and all related data
+      parameters:
+      - description: Ballot Draft ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Ballot Draft
+      tags:
+      - Ballot Draft
+    get:
+      consumes:
+      - application/json
+      description: Get a single ballot draft by ID with all related data
+      parameters:
+      - description: Ballot Draft ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotDraft'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Draft by ID
+      tags:
+      - Ballot Draft
+  /api/v1/estandard/ballot-group-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot group types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Group Types
+      tags:
+      - Global
+  /api/v1/estandard/ballot-request:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot requests with filtering and pagination
+      parameters:
+      - description: Filter by status (comma-separated for multiple)
+        in: query
+        name: status
+        type: string
+      - description: Search in name
+        in: query
+        name: search
+        type: string
+      - description: Filter by creator
+        in: query
+        name: createdBy
+        type: integer
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequestListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Requests List
+      tags:
+      - Ballot Request
+    post:
+      consumes:
+      - application/json
+      description: Create a new ballot request or update existing one with nested
+        relationships
+      parameters:
+      - description: Ballot Request data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BallotRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Ballot Request (Create or Update)
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request-statuses:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot request statuses (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Request Statuses
+      tags:
+      - Global
+  /api/v1/estandard/ballot-request/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a ballot request and all related data
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Ballot Request
+      tags:
+      - Ballot Request
+    get:
+      consumes:
+      - application/json
+      description: Get a single ballot request by ID with all related data
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Request by ID
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve a ballot request at manager (level 1) or director (level
+        2) level
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Approve request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ApproveBallotRequestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Approve Ballot Request
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/close:
+    post:
+      consumes:
+      - application/json
+      description: Close a ballot request (update status to closed)
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Close Ballot Request
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/disapprove:
+    post:
+      consumes:
+      - application/json
+      description: Disapprove a ballot request at manager (level 1) or director (level
+        2) level
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Disapprove request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DisapproveBallotRequestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Disapprove Ballot Request
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/review:
+    post:
+      consumes:
+      - application/json
+      description: Send a ballot request back for review at manager (level 1) or director
+        (level 2) level
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Review request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewBallotRequestRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Review Ballot Request
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/send-approval:
+    post:
+      consumes:
+      - application/json
+      description: Update ballot request status
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Status update request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendBallotRequestForApprovalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Send Ballot Request for Approval
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/{id}/send-email:
+    post:
+      consumes:
+      - application/json
+      description: Send emails to recipients for a ballot request
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequest'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Send Ballot Request Email
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-request/available:
+    get:
+      consumes:
+      - application/json
+      description: Get ballot requests available for the current user to answer
+      parameters:
+      - description: Search in name
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotRequestListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Available Ballot Requests
+      tags:
+      - Ballot Request
+  /api/v1/estandard/ballot-response:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ballot responses with filtering and pagination
+      parameters:
+      - description: Filter by ballot request ID
+        in: query
+        name: ballotRequestId
+        type: integer
+      - description: Filter by user ID
+        in: query
+        name: userId
+        type: integer
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotResponseListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Responses List
+      tags:
+      - Ballot Response
+    post:
+      consumes:
+      - application/json
+      description: Create or update a ballot response
+      parameters:
+      - description: Ballot response data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BallotResponse'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create or Update Ballot Response
+      tags:
+      - Ballot Response
+  /api/v1/estandard/ballot-response/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single ballot response by ID with all related data
+      parameters:
+      - description: Ballot Response ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Response by ID
+      tags:
+      - Ballot Response
+  /api/v1/estandard/ballot-response/request/{requestId}/user/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get a ballot response by request ID and user ID
+      parameters:
+      - description: Ballot Request ID
+        in: path
+        name: requestId
+        required: true
+        type: integer
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BallotResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Ballot Response by Request and User
+      tags:
+      - Ballot Response
+  /api/v1/estandard/banks:
+    get:
+      description: Get list of all banks from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all banks
+      tags:
+      - address
+  /api/v1/estandard/committeeTypes:
+    get:
+      consumes:
+      - application/json
+      description: Get list of expert group types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Expert Group Types
+      tags:
+      - Global
+  /api/v1/estandard/committees:
+    get:
+      consumes:
+      - application/json
+      description: Get list of committees with filtering and pagination
+      parameters:
+      - description: Committee Type ID
+        in: query
+        name: committeeType
+        type: integer
+      - description: Committee Name (comma-separated for multi-search)
+        in: query
+        name: committeeName
+        type: string
+      - description: Status (active, suspended, inactive)
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommitteeListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committees List
+      tags:
+      - Committee
+    post:
+      consumes:
+      - application/json
+      description: Create a new committee or update existing one based on committee_number
+      parameters:
+      - description: Committee form data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Committee'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Committee'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Committee (Create or Update)
+      tags:
+      - Committee
+  /api/v1/estandard/committees/{committeeNumber}:
+    get:
+      consumes:
+      - application/json
+      description: Get a single committee by committee_number
+      parameters:
+      - description: Committee Number
+        in: path
+        name: committeeNumber
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Committee'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committee by Committee Number
+      tags:
+      - Committee
+  /api/v1/estandard/committees/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a committee by ID
+      parameters:
+      - description: Committee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Committee
+      tags:
+      - Committee
+    get:
+      consumes:
+      - application/json
+      description: Get a single committee by ID
+      parameters:
+      - description: Committee ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Committee'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committee by ID
+      tags:
+      - Committee
+  /api/v1/estandard/committees/numberList/{committeeNumber}:
+    get:
+      consumes:
+      - application/json
+      description: Get a list of committees by committee_number
+      parameters:
+      - description: Committee Number
+        in: path
+        name: committeeNumber
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Committee'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committee by Committee Number
+      tags:
+      - Committee
+  /api/v1/estandard/degrees:
+    get:
+      description: Get list of all degrees from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all degrees
+      tags:
+      - address
+  /api/v1/estandard/deleteFile:
+    delete:
+      consumes:
+      - application/json
+      description: Delete file from MinIO by objectName (JSON body)
+      parameters:
+      - description: Delete request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DeleteFileRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Delete file
+      tags:
+      - File
+  /api/v1/estandard/departments:
+    get:
+      consumes:
+      - application/json
+      description: Get list of departments (master data from department table)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Departments
+      tags:
+      - Global
+  /api/v1/estandard/directive_types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of directive types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Directive Types
+      tags:
+      - Global
+  /api/v1/estandard/district/{provId}:
+    get:
+      description: Get list of districts that belong to a specific province
+      parameters:
+      - description: Province ID
+        in: path
+        name: provId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.District'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get districts by province ID
+      tags:
+      - address
+  /api/v1/estandard/document-sub-types:
+    get:
+      consumes:
+      - application/json
+      description: Get all active document sub types from master table
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Document Sub Types
+      tags:
+      - Master Data
+  /api/v1/estandard/document-types:
+    get:
+      consumes:
+      - application/json
+      description: Get all active document types from master table
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Document Types
+      tags:
+      - Master Data
+  /api/v1/estandard/documents:
+    get:
+      consumes:
+      - application/json
+      description: Get list of documents with optional filters
+      parameters:
+      - description: Document title (partial match)
+        in: query
+        name: title
+        type: string
+      - description: Document type code
+        in: query
+        name: type
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DocumentListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Documents
+      tags:
+      - Documents
+    post:
+      consumes:
+      - application/json
+      description: Create or update a document and log action (CREATE / EDIT)
+      parameters:
+      - description: Document data (include id for update)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DocumentItem'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DocumentItem'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Document
+      tags:
+      - Documents
+  /api/v1/estandard/documents/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete document (set status = 'Deleted') and log action
+      parameters:
+      - description: Document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Document
+      tags:
+      - Documents
+  /api/v1/estandard/documents/{id}/logs:
+    get:
+      consumes:
+      - application/json
+      description: Get all logs for a specific document
+      parameters:
+      - description: Document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DocumentLogListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Document Logs
+      tags:
+      - Documents
+  /api/v1/estandard/documents/{id}/notify:
+    post:
+      consumes:
+      - application/json
+      description: Set document status to 'Notified' and log action. Optionally send
+        email to committee members if subject and body are provided.
+      parameters:
+      - description: Document ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: 'Optional: Email subject and body to send notification'
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/models.NotifyDocumentRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.NotifyDocumentResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Notify Document
+      tags:
+      - Documents
+  /api/v1/estandard/documents/max-n-number:
+    get:
+      consumes:
+      - application/json
+      description: Get the maximum n_number from documents with optional filters
+      parameters:
+      - description: Filter by committee ID
+        in: query
+        name: committeeId
+        type: integer
+      - description: Filter by meeting ID
+        in: query
+        name: meetingId
+        type: integer
+      - description: Filter by document type code
+        in: query
+        name: typeCode
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MaxNNumberResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Max N Number
+      tags:
+      - Documents
+  /api/v1/estandard/documents/path-groups:
+    get:
+      description: Get distinct path prefixes (group by folder under documents/),
+        e.g. documents/meeting, documents/resolution
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DocumentPathGroupsResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get document path groups
+      tags:
+      - Documents
+  /api/v1/estandard/expert:
+    get:
+      consumes:
+      - application/json
+      description: Get list of experts with filtering and pagination. Supports comma-separated
+        search values.
+      parameters:
+      - description: 'Search by name (comma-separated for multi-search: ''John, Jane'')'
+        in: query
+        name: name
+        type: string
+      - description: Search by email (comma-separated for multi-search)
+        in: query
+        name: email
+        type: string
+      - description: Search by ID card (comma-separated for multi-search)
+        in: query
+        name: idCard
+        type: string
+      - description: Filter by status (active, inactive, pending)
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ExpertListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Experts List
+      tags:
+      - Expert
+    post:
+      consumes:
+      - application/json
+      description: Create a new expert record or update existing one based on user_id
+      parameters:
+      - description: Expert form data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Expert'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Expert'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Expert (Create or Update)
+      tags:
+      - Expert
+  /api/v1/estandard/expert/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete an expert record
+      parameters:
+      - description: Expert ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Expert
+      tags:
+      - Expert
+    get:
+      consumes:
+      - application/json
+      description: Get expert information by ID
+      parameters:
+      - description: Expert ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Expert'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Expert by ID
+      tags:
+      - Expert
+  /api/v1/estandard/expert/committees/members:
+    get:
+      consumes:
+      - application/json
+      description: Get list of committee members with filtering and pagination
+      parameters:
+      - description: Filter by committee ID
+        in: query
+        name: committeeId
+        type: integer
+      - description: Filter by expert ID
+        in: query
+        name: expertId
+        type: integer
+      - description: Filter by position ID
+        in: query
+        name: positionId
+        type: integer
+      - description: Filter by status (active/inactive)
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommitteeMemberListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committee Members List
+      tags:
+      - CommitteeMember
+    post:
+      consumes:
+      - application/json
+      description: Create a new committee member or update existing one based on id
+      parameters:
+      - description: Committee Member data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.CommitteeMember'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommitteeMember'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Committee Member (Create or Update)
+      tags:
+      - CommitteeMember
+  /api/v1/estandard/expert/committees/members/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a committee member by ID
+      parameters:
+      - description: Committee Member ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Committee Member
+      tags:
+      - CommitteeMember
+    get:
+      consumes:
+      - application/json
+      description: Get committee member information by ID
+      parameters:
+      - description: Committee Member ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommitteeMember'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Committee Member by ID
+      tags:
+      - CommitteeMember
+  /api/v1/estandard/expert/committees/my:
+    get:
+      consumes:
+      - application/json
+      description: Get list of committees that current logged-in user is a member
+        of, with filtering and pagination
+      parameters:
+      - description: Committee Type ID
+        in: query
+        name: committeeType
+        type: integer
+      - description: Committee Name (comma-separated for multi-search)
+        in: query
+        name: committeeName
+        type: string
+      - description: Status (active, suspended, inactive)
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CommitteeListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get My Expert Committees
+      tags:
+      - Committee
+  /api/v1/estandard/expert/directives:
+    get:
+      consumes:
+      - application/json
+      description: Get list of directives with filtering and pagination
+      parameters:
+      - description: Filter by directive type ID
+        in: query
+        name: orderType
+        type: integer
+      - description: Search in order_number (comma-separated for multi-search)
+        in: query
+        name: orderNumber
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DirectiveListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Directives List
+      tags:
+      - Directive
+    post:
+      consumes:
+      - application/json
+      description: Create a new directive or update existing one based on id
+      parameters:
+      - description: Directive data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Directive'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Directive'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Directive (Create or Update)
+      tags:
+      - Directive
+  /api/v1/estandard/expert/directives/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a directive by ID
+      parameters:
+      - description: Directive ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Directive
+      tags:
+      - Directive
+    get:
+      consumes:
+      - application/json
+      description: Get directive information by ID
+      parameters:
+      - description: Directive ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Directive'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Directive by ID
+      tags:
+      - Directive
+  /api/v1/estandard/expert/user/{userId}:
+    get:
+      consumes:
+      - application/json
+      description: Get expert information by user_id
+      parameters:
+      - description: User ID
+        in: path
+        name: userId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Expert'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Expert by User ID
+      tags:
+      - Expert
+  /api/v1/estandard/expertMemberTypes:
+    get:
+      consumes:
+      - application/json
+      description: Get list of expert member types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Expert Member Types
+      tags:
+      - Global
+  /api/v1/estandard/files/download:
+    get:
+      consumes:
+      - application/json
+      description: Download file from MinIO by file path
+      parameters:
+      - description: File path in MinIO
+        in: query
+        name: path
+        required: true
+        type: string
+      produces:
+      - application/octet-stream
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: file
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Download file
+      tags:
+      - File
+  /api/v1/estandard/group_positions:
+    get:
+      consumes:
+      - application/json
+      description: Get list of group positions (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Group Positions
+      tags:
+      - Global
+  /api/v1/estandard/iso-deliverables:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ISO deliverables (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get ISO Deliverables
+      tags:
+      - Global
+  /api/v1/estandard/iso-ics:
+    get:
+      consumes:
+      - application/json
+      description: Get list of ISO ICS (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get ISO ICS
+      tags:
+      - Global
+  /api/v1/estandard/meeting:
+    post:
+      consumes:
+      - application/json
+      description: Create a new meeting record or update existing one
+      parameters:
+      - description: Meeting data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.Meeting'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting (Create or Update)
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting-budget:
+    get:
+      consumes:
+      - application/json
+      description: Get list of meeting budgets with filtering and pagination
+      parameters:
+      - description: Filter by fiscal year
+        in: query
+        name: fiscalYear
+        type: string
+      - description: Filter by department ID
+        in: query
+        name: departmentId
+        type: string
+      - description: Filter by sub department ID
+        in: query
+        name: subDepartmentId
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingBudgetListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Budgets List
+      tags:
+      - Meeting Budget
+    post:
+      consumes:
+      - application/json
+      description: Create a new meeting budget record or update existing one
+      parameters:
+      - description: Meeting Budget data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingBudget'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingBudget'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting Budget (Create or Update)
+      tags:
+      - Meeting Budget
+  /api/v1/estandard/meeting-budget/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a meeting budget record by ID
+      parameters:
+      - description: Meeting Budget ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Meeting Budget
+      tags:
+      - Meeting Budget
+  /api/v1/estandard/meeting/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a meeting record by ID
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Meeting
+      tags:
+      - Meeting
+    get:
+      consumes:
+      - application/json
+      description: Get meeting information by ID
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting by ID
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve a meeting at the specified level
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Approve request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ApproveMeetingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Approve Meeting
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/attendee-details:
+    get:
+      consumes:
+      - application/json
+      description: Get meeting details with registration status for an attendee
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingWithRegistration'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Details for Attendee
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/close:
+    post:
+      consumes:
+      - application/json
+      description: Close a meeting (change status to meeting_closed)
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Close meeting request
+        in: body
+        name: request
+        schema:
+          $ref: '#/definitions/models.CloseMeetingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.CloseMeetingResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Close Meeting
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/disapprove:
+    post:
+      consumes:
+      - application/json
+      description: Disapprove a meeting
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Disapprove request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DisapproveMeetingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Disapprove Meeting
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/disbursement-summary:
+    get:
+      consumes:
+      - application/json
+      description: Get disbursement summary for a meeting
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummary'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Disbursement Summary
+      tags:
+      - Meeting Disbursement
+    post:
+      consumes:
+      - application/json
+      description: Create or update disbursement summary
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Disbursement Summary data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DisbursementSummary'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummary'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Disbursement Summary
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/disbursement-summary/approve:
+    post:
+      consumes:
+      - application/json
+      description: Approve disbursement at specified level
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Approve request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ApproveDisbursementRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummary'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Approve Disbursement
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/disbursement-summary/disapprove:
+    post:
+      consumes:
+      - application/json
+      description: Disapprove disbursement at specified level
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Disapprove request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.DisapproveDisbursementRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummary'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Disapprove Disbursement
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/disbursement-summary/generate-document:
+    post:
+      consumes:
+      - application/json
+      description: Generate expense document for disbursement
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenerateExpenseDocumentResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Generate Expense Document
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/disbursement-summary/review:
+    post:
+      consumes:
+      - application/json
+      description: Send disbursement back for review
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Review request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewDisbursementRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummary'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Review Disbursement
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/disbursement-summary/submit:
+    post:
+      consumes:
+      - application/json
+      description: Submit disbursement summary for approval
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SubmitDisbursementResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Submit Disbursement for Approval
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/expense:
+    get:
+      consumes:
+      - application/json
+      description: Get meeting expense by meeting ID
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingExpense'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Expense
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/expense/budget-info:
+    get:
+      consumes:
+      - application/json
+      description: Get budget information for a meeting
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingExpenseBudgetInfo'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Expense Budget Info
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/invitation:
+    get:
+      consumes:
+      - application/json
+      description: Get meeting invitation by meeting ID
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingInvitation'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Invitation
+      tags:
+      - Meeting
+    post:
+      consumes:
+      - application/json
+      description: Create or update meeting invitation
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Meeting invitation data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingInvitation'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingInvitation'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting Invitation
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/invitation/generate-letter:
+    post:
+      consumes:
+      - application/json
+      description: Generate invitation letter automatically
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.GenerateInvitationLetterResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Generate Invitation Letter
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/invitation/send-email:
+    post:
+      consumes:
+      - application/json
+      description: Send invitation email
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SendInvitationEmailResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Send Invitation Email
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/participants:
+    get:
+      consumes:
+      - application/json
+      description: Get list of meeting participants
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingParticipantListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Participants
+      tags:
+      - Meeting Disbursement
+    post:
+      consumes:
+      - application/json
+      description: Create or update a meeting participant
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Meeting Participant data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingParticipant'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingParticipant'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting Participant
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/{id}/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a user for a meeting with optional followers
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Registration request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingRegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.RegisterResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Register for Meeting
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/review:
+    post:
+      consumes:
+      - application/json
+      description: Send a meeting back for review
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Review request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ReviewMeetingRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Review Meeting
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/send-approval:
+    post:
+      consumes:
+      - application/json
+      description: Send a meeting for approval (level 1 or 2)
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Approval level (1 or 2)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SendApprovalRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Meeting'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Send Meeting for Approval
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/topics:
+    get:
+      consumes:
+      - application/json
+      description: Get list of topics for a meeting
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingTopicListResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Meeting Topics
+      tags:
+      - Meeting
+    post:
+      consumes:
+      - application/json
+      description: Create or update a meeting topic
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Meeting topic data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingTopic'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingTopic'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting Topic
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/{id}/topics/batch:
+    post:
+      consumes:
+      - application/json
+      description: Create or update multiple meeting topics at once
+      parameters:
+      - description: Meeting ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Batch meeting topics data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.BatchUpsertMeetingTopicsRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.BatchUpsertMeetingTopicsResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Batch Upsert Meeting Topics
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/approved:
+    get:
+      consumes:
+      - application/json
+      description: Get list of approved meetings with filtering and pagination
+      parameters:
+      - description: Filter by start date (from)
+        in: query
+        name: startDate
+        type: string
+      - description: Search in committee number, committee name, or instance number
+        in: query
+        name: search
+        type: string
+      - description: Filter by status
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Approved Meetings List
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/expense:
+    post:
+      consumes:
+      - application/json
+      description: Create or update meeting expense
+      parameters:
+      - description: Meeting Expense data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.MeetingExpense'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingExpense'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Meeting Expense
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/pending-disbursement-approval:
+    get:
+      consumes:
+      - application/json
+      description: Get list of disbursement summaries with pending approval and their
+        meetings
+      parameters:
+      - description: Start date
+        in: query
+        name: startDate
+        type: string
+      - description: End date
+        in: query
+        name: endDate
+        type: string
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Sub department ID
+        in: query
+        name: subDepartmentId
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.DisbursementSummaryListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Pending Disbursement Meetings
+      tags:
+      - Meeting Disbursement
+  /api/v1/estandard/meeting/topic/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a meeting topic by ID
+      parameters:
+      - description: Topic ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Meeting Topic
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/unapproved:
+    get:
+      consumes:
+      - application/json
+      description: Get list of unapproved meetings with filtering and pagination
+      parameters:
+      - description: Filter by start date (from)
+        in: query
+        name: startDate
+        type: string
+      - description: Search in committee number, committee name, or instance number
+        in: query
+        name: search
+        type: string
+      - description: Filter by status
+        in: query
+        name: status
+        type: string
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Items per page (default: 50)'
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingListResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Unapproved Meetings List
+      tags:
+      - Meeting
+  /api/v1/estandard/meeting/upcoming-invited:
+    get:
+      consumes:
+      - application/json
+      description: Get list of meetings that user is invited to and not yet reached
+        meeting date
+      parameters:
+      - description: Start date
+        in: query
+        name: startDate
+        type: string
+      - description: End date
+        in: query
+        name: endDate
+        type: string
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Sub department ID
+        in: query
+        name: subDepartmentId
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Limit per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MeetingListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Upcoming Invited Meetings
+      tags:
+      - Meeting
+  /api/v1/estandard/method-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of method types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Method Types
+      tags:
+      - Global
+  /api/v1/estandard/nss-sectors:
+    get:
+      consumes:
+      - application/json
+      description: Get list of NSS sectors (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get NSS Sectors
+      tags:
+      - Global
+  /api/v1/estandard/nss-subjects:
+    get:
+      consumes:
+      - application/json
+      description: Get list of NSS subjects (master data). Optionally filter by sector
+        ID.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get NSS Subjects
+      tags:
+      - Global
+  /api/v1/estandard/nss-subjects/{sectorId}:
+    get:
+      consumes:
+      - application/json
+      description: Get list of NSS subjects (master data). Optionally filter by sector
+        ID.
+      parameters:
+      - description: Sector ID to filter subjects
+        in: path
+        name: sectorId
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get NSS Subjects
+      tags:
+      - Global
+  /api/v1/estandard/organizations:
+    get:
+      consumes:
+      - application/json
+      description: Get list of organizations (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Organizations
+      tags:
+      - Global
+  /api/v1/estandard/product-bcgs:
+    get:
+      consumes:
+      - application/json
+      description: Get list of product BCGs (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Product BCGs
+      tags:
+      - Global
+  /api/v1/estandard/product-groups:
+    get:
+      consumes:
+      - application/json
+      description: Get list of product groups (master data from product_group)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Product Groups
+      tags:
+      - Global
+  /api/v1/estandard/product-policy-groups:
+    get:
+      consumes:
+      - application/json
+      description: Get list of product policy groups (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Product Policy Groups
+      tags:
+      - Global
+  /api/v1/estandard/project-review:
+    get:
+      consumes:
+      - application/json
+      description: Get list of project reviews with search and pagination
+      parameters:
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Stage code filter
+        in: query
+        name: stageCode
+        type: string
+      - description: Enforcement status filter
+        in: query
+        name: enforcementStatus
+        type: string
+      - description: Owner group ID filter
+        in: query
+        name: ownerGroupId
+        type: integer
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectReviewListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Projects Review List
+      tags:
+      - Projects
+  /api/v1/estandard/project-review/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update a project review by ID
+      parameters:
+      - description: Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project review data to update
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectReview'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Project Review
+      tags:
+      - Projects
+  /api/v1/estandard/project-review/{id}/logs:
+    get:
+      consumes:
+      - application/json
+      description: Get all log entries for a project review
+      parameters:
+      - description: Project Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProjectReviewLog'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Project Review Logs
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      description: Create or update a project review log entry
+      parameters:
+      - description: Project Review ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project review log data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectReviewLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectReviewLog'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Project Review Log
+      tags:
+      - Projects
+  /api/v1/estandard/projects:
+    get:
+      consumes:
+      - application/json
+      description: Get list of projects with search and pagination
+      parameters:
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      - description: Start year filter
+        in: query
+        name: startYear
+        type: string
+      - description: Stage code filter
+        in: query
+        name: stageCode
+        type: string
+      - description: Page number
+        in: query
+        name: page
+        type: integer
+      - description: Items per page
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectListResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Projects List
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      description: Create or update a project
+      parameters:
+      - description: Project data
+        in: body
+        name: project
+        required: true
+        schema:
+          $ref: '#/definitions/models.Project'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Project
+      tags:
+      - Projects
+  /api/v1/estandard/projects/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Soft delete a project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Delete Project
+      tags:
+      - Projects
+    get:
+      consumes:
+      - application/json
+      description: Get a single project by ID
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Project by ID
+      tags:
+      - Projects
+  /api/v1/estandard/projects/{id}/logs:
+    get:
+      consumes:
+      - application/json
+      description: Get all logs for a specific project
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.ProjectLog'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Project Logs
+      tags:
+      - Projects
+    post:
+      consumes:
+      - application/json
+      description: Create or update a project log entry
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Project log data
+        in: body
+        name: log
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectLog'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectLog'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Upsert Project Log
+      tags:
+      - Projects
+  /api/v1/estandard/projects/{id}/save-standard-announcement:
+    post:
+      consumes:
+      - application/json
+      description: Save standard announcement data to both i_projects and tb3_tis
+        tables
+      parameters:
+      - description: Project ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: Standard announcement data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.SaveStandardAnnouncementRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Save Standard Announcement
+      tags:
+      - Projects
+  /api/v1/estandard/projects/check-tis-number:
+    get:
+      consumes:
+      - application/json
+      description: Check if a TIS number already exists in tb3_tis table
+      parameters:
+      - description: TIS Number to check
+        in: query
+        name: tisNumber
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Response with exists field
+          schema:
+            additionalProperties:
+              type: boolean
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Check TIS Number
+      tags:
+      - Projects
+  /api/v1/estandard/projects/create-review-from-tis:
+    post:
+      consumes:
+      - application/json
+      description: Create a new project review from TIS number
+      parameters:
+      - description: Project review data
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.ProjectReview'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.ProjectReview'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Create Review From TIS
+      tags:
+      - Projects
+  /api/v1/estandard/projects/stage:
+    put:
+      consumes:
+      - application/json
+      description: Update the stage code and stage UI message for a project
+      parameters:
+      - description: Update stage request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.UpdateProjectStageRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Project'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Update Project Stage
+      tags:
+      - Projects
+  /api/v1/estandard/projects/tis-standards-for-review:
+    get:
+      consumes:
+      - application/json
+      description: Get list of TIS standards from tb3_tis table for review
+      parameters:
+      - description: Search term
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.TISStandardForReviewListResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get TIS Standards For Review
+      tags:
+      - Projects
+  /api/v1/estandard/province:
+    get:
+      description: Get list of all provinces from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Province'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all provinces
+      tags:
+      - address
+  /api/v1/estandard/regulations:
+    get:
+      consumes:
+      - application/json
+      description: Get list of regulations (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Regulations
+      tags:
+      - Global
+  /api/v1/estandard/responsible-groups:
+    get:
+      consumes:
+      - application/json
+      description: Get list of responsible groups (master data from sub_department)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Responsible Groups
+      tags:
+      - Global
+  /api/v1/estandard/sdos:
+    get:
+      consumes:
+      - application/json
+      description: Get list of SDOS (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get SDOS
+      tags:
+      - Global
+  /api/v1/estandard/sso/login:
+    post:
+      consumes:
+      - application/json
+      description: Profile with username or email  from sso_users table. Returns full
+        user information from sso_users table (except password)
+      parameters:
+      - description: Login credentials (username or email)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SSOAuthResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: SSO Profile (sso_users table)
+      tags:
+      - Auth
+  /api/v1/estandard/sso/profile-admin:
+    post:
+      consumes:
+      - application/json
+      description: Profile with username or email from user_register table. Returns
+        full user information mapped to UserInfo model (except password) and token
+      parameters:
+      - description: Login credentials (username or email)
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.SSOAuthResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: SSO Profile Admin (user_register table)
+      tags:
+      - Auth
+  /api/v1/estandard/stage-codes:
+    get:
+      consumes:
+      - application/json
+      description: Get all active stage codes from master table
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Stage Codes
+      tags:
+      - Master Data
+  /api/v1/estandard/std-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of standard types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Standard Types
+      tags:
+      - Global
+  /api/v1/estandard/sub-departments:
+    get:
+      consumes:
+      - application/json
+      description: Get list of sub departments (master data from sub_department table)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Sub Departments
+      tags:
+      - Global
+  /api/v1/estandard/sub-departments/{dpisId}:
+    get:
+      consumes:
+      - application/json
+      description: Get list of sub departments by DPIS ID
+      parameters:
+      - description: DPIS ID
+        in: path
+        name: dpisId
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Sub Departments by DPIS ID
+      tags:
+      - Global
+  /api/v1/estandard/subdistrict/{provId}/{districtId}:
+    get:
+      description: Get list of subdistricts within a province and district
+      parameters:
+      - description: Province ID
+        in: path
+        name: provId
+        required: true
+        type: integer
+      - description: District ID
+        in: path
+        name: districtId
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.SubDistrict'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get subdistricts by province and district ID
+      tags:
+      - address
+  /api/v1/estandard/tis-numbers:
+    get:
+      consumes:
+      - application/json
+      description: Get list of TIS numbers (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get TIS Numbers
+      tags:
+      - Global
+  /api/v1/estandard/tis-product-groups:
+    get:
+      consumes:
+      - application/json
+      description: Get list of TIS product groups (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get TIS Product Groups
+      tags:
+      - Global
+  /api/v1/estandard/titles:
+    get:
+      description: Get list of all titles from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all titles
+      tags:
+      - address
+  /api/v1/estandard/uploadFile:
+    post:
+      consumes:
+      - multipart/form-data
+      description: Upload file to MinIO
+      parameters:
+      - description: File to upload
+        in: formData
+        name: file
+        required: true
+        type: file
+      - description: Folder name
+        in: formData
+        name: folder
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.UploadResponse'
+      summary: Upload file
+  /api/v1/estandard/users:
+    get:
+      consumes:
+      - application/json
+      description: Get list of users from user_register where SUBSTRING(reg_subdepart,
+        1, 2) matches the provided reg_subdepart prefix. Returns UserInfo similar
+        to FindUserRegisterByUsernameOrEmail
+      parameters:
+      - description: Sub department code (e.g., 1704 - will match all starting with
+          17)
+        in: query
+        name: reg_subdepart
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.UserInfo'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Users by Sub Department
+      tags:
+      - Global
+  /api/v1/estandard/writer-types:
+    get:
+      consumes:
+      - application/json
+      description: Get list of writer types (master data)
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Writer Types
+      tags:
+      - Global
+  /api/v1/estandard/yearSelect:
+    get:
+      description: Get list of all year select from the database
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get all year select
+      tags:
+      - address
+  /api/v1/morenine/hello:
+    get:
+      description: Greet API
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.MessageResponse'
+      summary: Hello API
+  /users/department/{did}:
+    get:
+      consumes:
+      - application/json
+      description: Get list of users from user_register filtered by department id
+        (did) for select box search
+      parameters:
+      - description: Department ID (e.g., 08 for กองกำหนดมาตรฐาน)
+        in: path
+        name: did
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.MasterData'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      security:
+      - BearerAuth: []
+      summary: Get Users by Department
+      tags:
+      - Global
+swagger: "2.0"

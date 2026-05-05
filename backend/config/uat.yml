@@ -1,0 +1,44 @@
+build:
+  date: 2020/05/28
+  number: 1
+
+service:
+  name: estandard
+  port: 80
+  domain: estandard
+  endpoint: /estandard/estandardservice
+
+kibana:
+  suffix: estandard-api
+
+redis:
+  hots: 127.0.0.1:6379
+
+miniO:
+  host: 203.154.78.224:9200
+  user: minioadmin
+  pass: minioadmin!@#
+  bucketName: estisi-bucket-standard
+  maxFileSizeMB: 5
+
+mail:
+  host: mailrelay.uc-workd.com
+  port: 465
+  username: noreply-tisi5@tisi.mail.go.th
+  password: MUY1OEY3MUYMzYzRCMEI3UE0QjMQ0NCQzcwMDI0M0NF
+  from_address: tisi_regis@tisi.mail.go.th
+  from_name: NoReply Mail From TISI-SSO (NoReply)
+  encryption: ssl
+
+db:
+  mysql:
+    estisi:
+      connection:
+        sshHost: 203.154.78.224
+        sshPort: 22
+        sshUser: root
+        sshPass: t1s1@2568
+        dbUser: co_dev2025
+        dbPass: R$!3oH9b
+        dbHost: dev-data.tisi.go.th:3306
+        dbName: admin_dbtest
