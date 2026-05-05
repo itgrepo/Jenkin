@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Noto Sans Thai', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f8fafc;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* ProductCard hover effects */
+.MuiCard-root:hover .action-buttons {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Smooth transitions for all elements */
+* {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom focus styles */
+.MuiButton-root:focus-visible,
+.MuiIconButton-root:focus-visible,
+.MuiTextField-root .MuiOutlinedInput-root:focus-within {
+  outline: 2px solid #1976d2;
+  outline-offset: 2px;
+}
+
+/* Loading animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loading-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Slide up animation */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+/* Bounce animation */
+@keyframes bounce {
+  0%, 20%, 53%, 80%, 100% {
+    transform: translate3d(0, 0, 0);
+  }
+  40%, 43% {
+    transform: translate3d(0, -8px, 0);
+  }
+  70% {
+    transform: translate3d(0, -4px, 0);
+  }
+  90% {
+    transform: translate3d(0, -2px, 0);
+  }
+}
+
+.bounce {
+  animation: bounce 1s;
+}
+
+/* Gradient text */
+.gradient-text {
+  background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Backdrop effects */
+.MuiBackdrop-root {
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Drawer backdrop enhancement */
+.MuiDrawer-root .MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+  backdrop-filter: blur(4px) !important;
+}
+
+/* Responsive utilities */
+@media (max-width: 600px) {
+  .hide-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: 601px) {
+  .hide-desktop {
+    display: none !important;
+  }
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+/* swal-theme.css */
+.swal2-popup {
+    font-family: 'Noto Sans Thai', 'Roboto', sans-serif !important;
+  }
+  
+  .swal2-confirm {
+    background-color: var(--swal-confirm-color) !important; /* ใช้สี primary ของ MUI */
+    color: white !important;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-family: 'Noto Sans Thai', 'Roboto', sans-serif !important;
+  }
+
+  .swal2-cancel {
+    background-color: var(--swal-cancel-color) !important; /* ใช้สี primary ของ MUI */
+    color: white !important;
+    font-weight: 500;
+    border-radius: 5px;
+    padding: 8px 20px;
+    font-family: 'Noto Sans Thai', 'Roboto', sans-serif !important;
+  }
+
+  .mui-swal-popup {
+    font-family: 'Noto Sans Thai', 'Roboto', sans-serif;
+  }
+  
+  .mui-swal-button {
+    background-color: #5a965b !important; /* Primary สี MUI */
+    color: white !important;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 24px;
+  }
+  
+  .mui-swal-cancel {
+    background-color: #e0e0e0 !important; /* เทาอ่อน */
+    color: #333 !important;
+    font-weight: 500;
+    border-radius: 8px;
+    padding: 8px 24px;
+    margin-left: 8px;
+  }
+  .swal2-container {
+    z-index: 9999;
+  }
+
+/* Disable Autocomplete dropdown animations */
+.MuiAutocomplete-popper .MuiPaper-root,
+.MuiPopper-root .MuiPaper-root {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* Disable Popper transition effects */
+.MuiAutocomplete-popper[data-popper-placement],
+.MuiPopper-root[data-popper-placement] {
+  transition: none !important;
+}
+
+.MuiAutocomplete-popper .MuiAutocomplete-paper,
+.MuiPopper-root .MuiAutocomplete-paper {
+  transition: none !important;
+  animation: none !important;
+}
